@@ -10,9 +10,13 @@ class Mparser(Parser):
 
 
     precedence = (
-    # to fill ...
-        ("left", '+', '-'),
-    # to fill ...
+        ('nonassoc', IFX),
+        ('nonassoc', ELSE),
+        ('nonassoc', '<', '>', EQ, NEQ, LE, GE),
+        ('left', '+', '-', DOTADD, DOTSUB),
+        ('left', '*', '/', DOTMUL, DOTDIV),
+        ('right', UMINUS),
+        ('left', "'"),
     )
 
 
@@ -36,7 +40,52 @@ class Mparser(Parser):
     def instructions(p):
         pass
 
+    @_('expr "+" expr',
+       'expr "-" expr',
+       'expr "*" expr',
+       'expr "/" expr',
+       'expr DOTADD expr',
+       'expr DOTSUB expr',
+       'expr DOTMUL expr',
+       'expr DOTDIV expr')
+    def expr(self, p):
+        pass
 
-    # to finish the grammar
-    # ....
+    @_('expr "<" expr',
+       'expr ">" expr',
+       'expr EQ expr',
+       'expr NEQ expr',
+       'expr LE expr',
+       'expr GE expr')
+    def expr(self, p):
+        pass
+
+    @_('"-" expr %prec UMINUS')
+    def expr(self, p):
+        pass
+
+    @_('expr "\'"')
+    def expr(self, p):
+        pass
+
+    @_('"(" expr ")"')
+    def expr(self, p):
+        pass
+
+    @_('ID', 
+       'INTNUM', 
+       'FLOATNUM', 
+       'STRING')
+    def expr(self, p):
+        pass
+
+    @_('ID "[" expr "," expr "]"')
+    def expr(self, p):
+        pass
+
+    def error(self, p):
+        if p:
+            print(f"({p.lineno}): blad skladniowy - niespodziewany token '{p.value}'")
+        else:
+            print("blad skladniowy: niespodziewany koniec pliku (EOF)")
 
