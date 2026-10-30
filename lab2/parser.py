@@ -59,8 +59,7 @@ class Mparser(Parser):
     def assignment_operator(self, p):
         pass
 
-    @_('PRINT expr',
-       'PRINT expr "," expr')
+    @_('PRINT expr_list')
     def print_stmt(self, p):
         pass
 
