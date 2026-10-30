@@ -19,25 +19,103 @@ class Mparser(Parser):
         ('left', "'"),
     )
 
-
     @_('instructions_opt')
-    def program(p):
+    def program(self, p):
         pass
 
-    @_('instructions')
-    def instructions_opt(p):
+    @_('instructions',
+       '')
+    def instructions_opt(self, p):
+        pass
+    
+    @_('instructions instruction',
+       'instruction')
+    def instructions(self, p):
         pass
 
-    @_('')
-    def instructions_opt(p):
+    @_('assignment ";"',
+        'print_stmt ";"',
+        'break_stmt ";"',
+        'continue_stmt ";"',
+        'return_stmt ";"',
+        'if_stmt',
+        'while_stmt',
+        'for_stmt',
+        'compound_stmt')
+    def instruction(self, p):
         pass
 
-    @_('instructions instruction')
-    def instructions(p):
+
+    @_('ID assignment_operator expr',
+       'ID "[" expr "," expr "]" assignment_operator expr')
+    def assignment(self, p):
         pass
 
-    @_('instruction')
-    def instructions(p):
+    @_('"="',
+       'ADDASSIGN',
+       'SUBASSIGN',
+       'MULASSIGN',
+       'DIVASSIGN')
+    def assignment_operator(self, p):
+        pass
+
+    @_('PRINT expr',
+       'PRINT expr "," expr')
+    def print_stmt(self, p):
+        pass
+
+    @_('BREAK')
+    def break_stmt(self, p):
+        pass
+
+    @_('CONTINUE')
+    def continue_stmt(self, p):
+        pass
+
+    @_('RETURN',
+       'RETURN expr')
+    def return_stmt(self, p):
+        pass
+
+    @_('"{" instructions_opt "}"')
+    def compound_stmt(self, p):
+        pass
+
+    @_('IF expr instruction %prec IFX',
+       'IF expr instruction ELSE instruction',)
+    def if_stmt(self, p):
+        pass
+
+    @_('WHILE expr instruction',)
+    def while_stmt(self, p):
+        pass
+
+    @_('FOR ID "=" expr ":" expr instruction')
+    def for_stmt(self, p):
+        pass
+
+    @_('ZEROS "(" expr ")"',
+       'ONES "(" expr ")"',
+       'EYE "(" expr ")"')
+    def expr(self, p):
+        pass
+
+    @_('"[" matrix_rows "]"')
+    def expr(self, p):
+        pass
+
+    @_('matrix_rows "," matrix_row',
+       'matrix_row')
+    def matrix_rows(self, p):
+        pass
+
+    @_('"[" expr_list "]"')
+    def matrix_row(self, p):
+        pass
+
+    @_('expr_list "," expr',
+       'expr')
+    def expr_list(self, p):
         pass
 
     @_('expr "+" expr',
@@ -88,4 +166,3 @@ class Mparser(Parser):
             print(f"({p.lineno}): blad skladniowy - niespodziewany token '{p.value}'")
         else:
             print("blad skladniowy: niespodziewany koniec pliku (EOF)")
-
