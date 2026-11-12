@@ -1,11 +1,63 @@
 class AST:
     def printTree(self, indent=0):
-        raise NotImplementedError
+        raise NotImplementedError("printTree not defined in class " + self.__class__.__name__)
+
+
+class IntNum(AST):
+    def __init__(self, value):
+        self.value = value
+
+
+class FloatNum(AST):
+    def __init__(self, value):
+        self.value = value
+
+
+class String(AST):
+    def __init__(self, value):
+        self.value = value
 
 
 class Variable(AST):
     def __init__(self, name):
         self.name = name
+
+
+class BinExpr(AST):
+    def __init__(self, op, left, right):
+        self.op = op
+        self.left = left
+        self.right = right
+
+
+class UnaryExpr(AST):
+    def __init__(self, op, expr):
+        self.op = op
+        self.expr = expr
+
+
+class Assignment(AST):
+    def __init__(self, op, left, right):
+        self.op = op
+        self.left = left
+        self.right = right
+
+
+class MatrixFunc(AST):
+    def __init__(self, name, arg):
+        self.name = name
+        self.arg = arg
+
+
+class Vector(AST):
+    def __init__(self, elements):
+        self.elements = elements
+
+
+class Ref(AST):
+    def __init__(self, variable, indices):
+        self.variable = variable
+        self.indices = indices
 
 
 class Range(AST):
@@ -55,3 +107,7 @@ class Return(AST):
 class CompoundStmt(AST):
     def __init__(self, instructions):
         self.instructions = instructions
+
+
+class Error(AST):
+    pass

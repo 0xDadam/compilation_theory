@@ -8,7 +8,10 @@ try:
     from .parser import Mparser
     from . import TreePrinter
 except ImportError:
-    from lab1.scanner import Scanner
+    try:
+        from lab1.scanner import Scanner
+    except ImportError:
+        from scanner import Scanner
     from parser import Mparser
     import TreePrinter
 
