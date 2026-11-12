@@ -1,5 +1,5 @@
 from sly import Parser
-from lab1.scanner import Scanner
+from scanner import Scanner
 
 
 class Mparser(Parser):
